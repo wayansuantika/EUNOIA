@@ -5,17 +5,18 @@ import { ProductPage } from "@/components/product-page";
 import { getProduct, products } from "@/lib/site-data";
 
 type ProductPageRouteProps = {
-  params: {
+  params: Promise<{
     slug: string;
-  };
+  }>;
 };
 
 export function generateStaticParams() {
   return products.map((product) => ({ slug: product.slug }));
 }
 
-export function generateMetadata({ params }: ProductPageRouteProps): Metadata {
-  const product = getProduct(params.slug as (typeof products)[number]["slug"]);
+export async function generateMetadata({ params }: ProductPageRouteProps): Promise<Metadata> {
+  const resolvedParams = await params;
+  const product = getProduct(resolvedParams.slug as (typeof products)[number]["slug"]);
 
   if (!product) {
     return {};
@@ -28,8 +29,9 @@ export function generateMetadata({ params }: ProductPageRouteProps): Metadata {
   };
 }
 
-export default function ProductSlugPage({ params }: ProductPageRouteProps) {
-  const product = getProduct(params.slug as (typeof products)[number]["slug"]);
+export default async function ProductSlugPage({ params }: ProductPageRouteProps) {
+  const resolvedParams = await params;
+  const product = getProduct(resolvedParams.slug as (typeof products)[number]["slug"]);
 
   if (!product) {
     notFound();
