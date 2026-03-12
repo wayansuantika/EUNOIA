@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
 type NavLink = {
   href: string;
@@ -16,10 +16,61 @@ type MobileNavProps = {
 export function MobileNav({ links }: MobileNavProps) {
   const pathname = usePathname();
   const [open, setOpen] = useState(false);
+  const buttonRef = useRef<HTMLButtonElement>(null);
+  const panelRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     setOpen(false);
   }, [pathname]);
+
+  useEffect(() => {
+    if (!open) {
+      document.body.style.removeProperty("overflow");
+      return;
+    }
+
+    document.body.style.overflow = "hidden";
+
+    const focusable = getFocusableElements(panelRef.current);
+    focusable[0]?.focus();
+
+    const handleKeyDown = (event: KeyboardEvent) => {
+      if (event.key === "Escape") {
+        event.preventDefault();
+        setOpen(false);
+        buttonRef.current?.focus();
+        return;
+      }
+
+      if (event.key !== "Tab") {
+        return;
+      }
+
+      const elements = getFocusableElements(panelRef.current);
+      if (elements.length === 0) {
+        return;
+      }
+
+      const first = elements[0];
+      const last = elements[elements.length - 1];
+      const activeElement = document.activeElement;
+
+      if (event.shiftKey && activeElement === first) {
+        event.preventDefault();
+        last.focus();
+      } else if (!event.shiftKey && activeElement === last) {
+        event.preventDefault();
+        first.focus();
+      }
+    };
+
+    document.addEventListener("keydown", handleKeyDown);
+
+    return () => {
+      document.removeEventListener("keydown", handleKeyDown);
+      document.body.style.removeProperty("overflow");
+    };
+  }, [open]);
 
   return (
     <div className="relative md:hidden">
@@ -31,7 +82,10 @@ export function MobileNav({ links }: MobileNavProps) {
         aria-hidden="true"
       />
       <button
+        ref={buttonRef}
         type="button"
+        aria-label={open ? "Close menu" : "Open menu"}
+        aria-haspopup="menu"
         aria-expanded={open}
         aria-controls="mobile-navigation"
         onClick={() => setOpen((current) => !current)}
@@ -45,14 +99,16 @@ export function MobileNav({ links }: MobileNavProps) {
         </span>
       </button>
       <div
+        ref={panelRef}
         id="mobile-navigation"
+        aria-hidden={!open}
         className={`absolute right-0 top-[calc(100%+0.75rem)] z-[60] w-[calc(100vw-2.5rem)] max-w-[22rem] origin-top-right overflow-hidden transition-all duration-300 sm:w-[22rem] ${
           open
             ? "pointer-events-auto translate-y-0 scale-100 opacity-100"
             : "pointer-events-none -translate-y-3 scale-[0.97] opacity-0"
         }`}
       >
-        <nav className="grid gap-2 rounded-[24px] border border-white/10 bg-[#131318]/95 p-3 shadow-[0_24px_80px_rgba(0,0,0,0.55)] backdrop-blur-xl">
+        <nav aria-label="Mobile navigation" className="grid gap-2 rounded-[24px] border border-white/10 bg-[#131318]/95 p-3 shadow-[0_24px_80px_rgba(0,0,0,0.55)] backdrop-blur-xl">
           {links.map((link) => {
             const active = pathname === link.href;
 
@@ -73,5 +129,17 @@ export function MobileNav({ links }: MobileNavProps) {
         </nav>
       </div>
     </div>
+  );
+}
+
+function getFocusableElements(container: HTMLElement | null) {
+  if (!container) {
+    return [] as HTMLElement[];
+  }
+
+  return Array.from(
+    container.querySelectorAll<HTMLElement>(
+      'a[href], button:not([disabled]), textarea, input, select, [tabindex]:not([tabindex="-1"])'
+    )
   );
 }

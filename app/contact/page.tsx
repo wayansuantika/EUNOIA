@@ -31,9 +31,10 @@ export default function ContactPage() {
             <a
               href={getTemplateWhatsAppLink()}
               target="_blank"
-              rel="noreferrer"
+              rel="noopener noreferrer"
               data-track-whatsapp="true"
               data-track-label="contact-order"
+              aria-label="Open WhatsApp order template in a new tab"
               className="mt-4 inline-flex rounded-full border border-white/15 px-5 py-3 text-sm font-semibold text-white transition hover:border-white/30 hover:bg-white/5"
             >
               Open WhatsApp order

@@ -50,9 +50,10 @@ export function ProductPage({ product }: ProductPageProps) {
             <a
               href={getWhatsAppLink(product.orderText)}
               target="_blank"
-              rel="noreferrer"
+              rel="noopener noreferrer"
               data-track-whatsapp="true"
               data-track-label={`${product.slug}-detail-order`}
+              aria-label={`Order ${product.name} via WhatsApp (opens in a new tab)`}
               className={`inline-flex rounded-full bg-gradient-to-r ${product.gradient} px-6 py-3.5 text-sm font-semibold text-black transition hover:brightness-110`}
             >
               Order {product.name}

@@ -84,9 +84,10 @@ export function HomeHero() {
             <a
               href={getWhatsAppLink(activeProduct.orderText)}
               target="_blank"
-              rel="noreferrer"
+              rel="noopener noreferrer"
               data-track-whatsapp="true"
               data-track-label={`home-hero-${activeProduct.slug}-order`}
+              aria-label={`Order ${activeProduct.name} via WhatsApp (opens in a new tab)`}
               className={`inline-flex w-full justify-center rounded-full bg-gradient-to-r ${activeProduct.gradient} px-7 py-4 text-sm font-semibold uppercase tracking-[0.18em] text-black transition duration-300 hover:brightness-110 sm:w-auto`}
             >
               Order {activeProduct.name}

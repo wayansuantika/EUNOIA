@@ -19,7 +19,7 @@ export function Footer() {
         <div className="grid gap-8 sm:grid-cols-2">
           <div className="space-y-3 text-sm text-white/65">
             <p className="text-xs uppercase tracking-[0.3em] text-white/45">Links</p>
-            <Link href="/" className="block hover:text-white">
+            <Link href="/shop" className="block hover:text-white">
               Shop
             </Link>
             <Link href="/science" className="block hover:text-white">
@@ -29,7 +29,7 @@ export function Footer() {
               About
             </Link>
             <Link href="/contact" className="block hover:text-white">
-              Instagram
+              Contact
             </Link>
             <a href="#newsletter" className="block hover:text-white">
               Newsletter

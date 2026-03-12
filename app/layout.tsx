@@ -9,12 +9,13 @@ import { SiteHeader } from "@/components/site-header";
 import { TrackingEvents } from "@/components/tracking-events";
 import { WhatsAppButton } from "@/components/whatsapp-button";
 import { primaryKeywords } from "@/lib/site-data";
+import { getSiteUrlObject } from "@/lib/site-url";
 
 const inter = Inter({ subsets: ["latin"], variable: "--font-body" });
 const spaceGrotesk = Space_Grotesk({ subsets: ["latin"], variable: "--font-display" });
 
 export const metadata: Metadata = {
-  metadataBase: new URL("https://eunoiavits.com"),
+  metadataBase: getSiteUrlObject(),
   title: {
     default: "EUNOIA VITS | Functional Drinks For How You Want To Feel",
     template: "%s | EUNOIA VITS"

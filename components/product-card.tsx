@@ -51,9 +51,10 @@ export function ProductCard({ product }: ProductCardProps) {
           <a
             href={getWhatsAppLink(product.orderText)}
             target="_blank"
-            rel="noreferrer"
+            rel="noopener noreferrer"
             data-track-whatsapp="true"
             data-track-label={`${product.slug}-card-order`}
+            aria-label={`Order ${product.name} via WhatsApp (opens in a new tab)`}
             className="inline-flex rounded-full border border-white/15 px-5 py-3 text-sm font-semibold text-white transition hover:border-white/30 hover:bg-white/5"
           >
             Order now
