@@ -47,6 +47,7 @@ h6 {
 
 .glass-card {
   background: linear-gradient(180deg, rgba(255, 255, 255, 0.08), rgba(255, 255, 255, 0.03));
+  -webkit-backdrop-filter: blur(18px);
   backdrop-filter: blur(18px);
 }
 
@@ -100,14 +101,14 @@ h6 {
 
 @supports (animation-timeline: view()) {
   .scroll-reveal {
-    opacity: 0;
+    opacity: 1;
     animation: reveal-up 640ms cubic-bezier(0.22, 1, 0.36, 1) both;
     animation-timeline: view();
     animation-range: entry 10% cover 30%;
   }
 
   .scroll-stagger > * {
-    opacity: 0;
+    opacity: 1;
     animation: reveal-up 620ms cubic-bezier(0.22, 1, 0.36, 1) both;
     animation-timeline: view();
     animation-range: entry 8% cover 30%;
@@ -126,7 +127,7 @@ h6 {
   }
 
   .bottle-reveal {
-    opacity: 0;
+    opacity: 1;
     animation: bottle-reveal 760ms cubic-bezier(0.22, 1, 0.36, 1) both;
     animation-timeline: view();
     animation-range: entry 14% cover 36%;
