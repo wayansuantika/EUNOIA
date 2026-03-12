@@ -1,8 +1,8 @@
 import type { Metadata } from "next";
 
 import { ProductCard } from "@/components/product-card";
+import { getAggregateOfferSchema } from "@/lib/schema";
 import { products } from "@/lib/site-data";
-import { ShopSchemaClient } from "@/components/aggregate-offer-schema";
 
 export const metadata: Metadata = {
   title: "Shop | Eunoia Vits",
@@ -10,9 +10,11 @@ export const metadata: Metadata = {
 };
 
 export default function ShopPage() {
+  const aggregateOfferSchema = getAggregateOfferSchema(products);
+
   return (
     <>
-      <ShopSchemaClient products={products} />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(aggregateOfferSchema) }} />
       <section className="relative overflow-hidden px-5 pb-16 pt-24 sm:px-6 sm:pb-20 sm:pt-32 lg:px-10 lg:pb-24 lg:pt-40">
         <div className="absolute inset-x-0 top-0 h-[720px] bg-mesh-glow opacity-70" />
         <div className="absolute left-1/2 top-10 hidden -translate-x-1/2 text-center font-[family-name:var(--font-display)] text-[14vw] font-semibold uppercase leading-none tracking-[-0.08em] text-white/[0.04] lg:block">

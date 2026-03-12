@@ -1,7 +1,7 @@
 import { Product, getWhatsAppLink } from "@/lib/site-data";
 import { ProductHero } from "@/components/product-hero";
-import { ProductSchema } from "@/components/product-schema";
 import { ProductCard } from "@/components/product-card";
+import { getProductSchema } from "@/lib/schema";
 import { products } from "@/lib/site-data";
 
 type ProductPageProps = {
@@ -10,10 +10,11 @@ type ProductPageProps = {
 
 export function ProductPage({ product }: ProductPageProps) {
   const relatedProducts = products.filter((item) => item.slug !== product.slug);
+  const productSchema = getProductSchema(product);
 
   return (
     <>
-      <ProductSchema product={product} />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(productSchema) }} />
       <ProductHero product={product} />
       <section id="ingredients" className="px-6 py-20 lg:px-10">
         <div className="mx-auto grid max-w-7xl gap-8 lg:grid-cols-[0.9fr_1.1fr]">

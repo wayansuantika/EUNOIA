@@ -1,6 +1,20 @@
 import { Product } from "./site-data";
 import { getSiteUrl } from "./site-url";
 
+function parseIdrPrice(price?: string) {
+  if (!price) {
+    return undefined;
+  }
+
+  const numeric = Number(price.replace(/[^0-9]/g, ""));
+
+  if (Number.isNaN(numeric) || numeric <= 0) {
+    return undefined;
+  }
+
+  return numeric;
+}
+
 export function getOrganizationSchema() {
   const siteUrl = getSiteUrl();
 
@@ -54,6 +68,22 @@ export function getProductSchema(product: Product) {
   const siteUrl = getSiteUrl();
   const productUrl = `${siteUrl}/${product.slug}`;
   const image = `${siteUrl}${product.image}`;
+  const parsedPrice = parseIdrPrice(product.price);
+  const offer = {
+    "@type": "Offer",
+    url: productUrl,
+    availability: "https://schema.org/InStock",
+    seller: {
+      "@type": "Organization",
+      name: "EUNOIA VITS"
+    },
+    ...(parsedPrice
+      ? {
+          priceCurrency: "IDR",
+          price: parsedPrice
+        }
+      : {})
+  };
 
   return {
     "@context": "https://schema.org",
@@ -71,24 +101,7 @@ export function getProductSchema(product: Product) {
       name: "EUNOIA VITS"
     },
     category: "Functional Beverage",
-    offers: {
-      "@type": "Offer",
-      url: productUrl,
-      priceCurrency: "IDR",
-      price: product.price || "Price on request",
-      availability: "https://schema.org/InStock",
-      seller: {
-        "@type": "Organization",
-        name: "EUNOIA VITS"
-      }
-    },
-    aggregateRating: {
-      "@type": "AggregateRating",
-      ratingValue: "5",
-      reviewCount: "0",
-      bestRating: "5",
-      worstRating: "1"
-    },
+    offers: offer,
     potentialAction: {
       "@type": "TradeAction",
       target: {
@@ -115,6 +128,22 @@ export function getBreadcrumbSchema(breadcrumbs: Array<{ name: string; url: stri
 
 export function getAggregateOfferSchema(products: Product[]) {
   const siteUrl = getSiteUrl();
+  const offerList = products.map((product) => {
+    const parsedPrice = parseIdrPrice(product.price);
+
+    return {
+      "@type": "Offer",
+      name: product.name,
+      url: `${siteUrl}/${product.slug}`,
+      availability: "https://schema.org/InStock",
+      ...(parsedPrice
+        ? {
+            priceCurrency: "IDR",
+            price: parsedPrice
+          }
+        : {})
+    };
+  });
 
   return {
     "@context": "https://schema.org",
@@ -122,14 +151,7 @@ export function getAggregateOfferSchema(products: Product[]) {
     name: "EUNOIA VITS Product Collection",
     description: "Functional vitamin drinks and gummies",
     url: `${siteUrl}/shop`,
-    priceCurrency: "IDR",
-    offers: products.map((product) => ({
-      "@type": "Offer",
-      name: product.name,
-      url: `${siteUrl}/${product.slug}`,
-      price: product.price || "Price on request",
-      availability: "https://schema.org/InStock"
-    })),
+    offers: offerList,
     availability: "https://schema.org/InStock"
   };
 }

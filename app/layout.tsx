@@ -5,10 +5,10 @@ import "./globals.css";
 
 import { Analytics } from "@/components/analytics";
 import { Footer } from "@/components/footer";
-import { SchemaScripts } from "@/components/schema-scripts";
 import { SiteHeader } from "@/components/site-header";
 import { TrackingEvents } from "@/components/tracking-events";
 import { WhatsAppButton } from "@/components/whatsapp-button";
+import { getLocalBusinessSchema, getOrganizationSchema } from "@/lib/schema";
 import { primaryKeywords } from "@/lib/site-data";
 import { getSiteUrlObject } from "@/lib/site-url";
 
@@ -32,10 +32,14 @@ export const metadata: Metadata = {
 };
 
 export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
+  const organizationSchema = getOrganizationSchema();
+  const localBusinessSchema = getLocalBusinessSchema();
+
   return (
     <html lang="en">
       <body className={`${inter.variable} ${spaceGrotesk.variable} bg-background text-foreground antialiased`}>
-        <SchemaScripts />
+        <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(organizationSchema) }} />
+        <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(localBusinessSchema) }} />
         <Analytics />
         <TrackingEvents />
         <div className="relative min-h-screen overflow-hidden">
