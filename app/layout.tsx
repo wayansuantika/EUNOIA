@@ -5,6 +5,7 @@ import "./globals.css";
 
 import { Analytics } from "@/components/analytics";
 import { Footer } from "@/components/footer";
+import { SchemaScripts } from "@/components/schema-scripts";
 import { SiteHeader } from "@/components/site-header";
 import { TrackingEvents } from "@/components/tracking-events";
 import { WhatsAppButton } from "@/components/whatsapp-button";
@@ -34,6 +35,7 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
   return (
     <html lang="en">
       <body className={`${inter.variable} ${spaceGrotesk.variable} bg-background text-foreground antialiased`}>
+        <SchemaScripts />
         <Analytics />
         <TrackingEvents />
         <div className="relative min-h-screen overflow-hidden">

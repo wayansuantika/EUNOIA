@@ -1,5 +1,6 @@
 import { Product, getWhatsAppLink } from "@/lib/site-data";
 import { ProductHero } from "@/components/product-hero";
+import { ProductSchema } from "@/components/product-schema";
 import { ProductCard } from "@/components/product-card";
 import { products } from "@/lib/site-data";
 
@@ -12,6 +13,7 @@ export function ProductPage({ product }: ProductPageProps) {
 
   return (
     <>
+      <ProductSchema product={product} />
       <ProductHero product={product} />
       <section id="ingredients" className="px-6 py-20 lg:px-10">
         <div className="mx-auto grid max-w-7xl gap-8 lg:grid-cols-[0.9fr_1.1fr]">
